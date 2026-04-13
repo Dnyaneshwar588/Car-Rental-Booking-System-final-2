@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import axios from 'axios'
 import {toast} from 'react-hot-toast'
 import { useNavigate } from "react-router-dom";
-import { dummyCarData } from "../assets/assets";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 
@@ -21,7 +20,6 @@ export const AppProvider = ({ children })=>{
     const [returnDate, setReturnDate] = useState('')
 
     const [cars, setCars] = useState([])
-    const [isDemoData, setIsDemoData] = useState(false)
 
     // Function to check if user is logged in
     const fetchUser = async ()=>{
@@ -50,27 +48,15 @@ export const AppProvider = ({ children })=>{
     // Function to fetch all cars from the server
     const fetchCars = async () =>{
         try {
-            // If user is logged in, fetch from protected endpoint
-            if (token) {
-                const {data} = await axios.get('/api/owner/available-cars')
-                if (data.success && data.cars.length > 0) {
-                    setCars(data.cars)
-                    setIsDemoData(false)
-                } else {
-                    setCars(dummyCarData)
-                    setIsDemoData(true)
-                    if (!data.success) {
-                        toast.error(data.message)
-                    }
-                }
+            const {data} = await axios.get('/api/owner/available-cars')
+            if (data.success) {
+                setCars(data.cars || [])
             } else {
-                // For non-logged-in users, use dummy data
-                setCars(dummyCarData)
-                setIsDemoData(true)
+                setCars([])
+                toast.error(data.message)
             }
         } catch (error) {
-            setCars(dummyCarData)
-            setIsDemoData(true)
+            setCars([])
             toast.error(error.message)
         }
     }
@@ -104,7 +90,7 @@ export const AppProvider = ({ children })=>{
     const value = {
         navigate, currency, axios, user, setUser,
         token, setToken, isOwner, setIsOwner, fetchUser, showLogin, setShowLogin, logout, fetchCars, cars, setCars, 
-        pickupDate, setPickupDate, returnDate, setReturnDate, isDemoData
+        pickupDate, setPickupDate, returnDate, setReturnDate
     }
 
     return (

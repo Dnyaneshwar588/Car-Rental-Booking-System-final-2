@@ -10,7 +10,7 @@ const CarDetails = () => {
 
   const {id} = useParams()
 
-  const {cars, axios, pickupDate, setPickupDate, returnDate, setReturnDate, isDemoData, fetchCars} = useAppContext()
+  const {cars, axios, pickupDate, setPickupDate, returnDate, setReturnDate} = useAppContext()
 
   const navigate = useNavigate()
   const [car, setCar] = useState(null)
@@ -21,10 +21,6 @@ const CarDetails = () => {
 
   const handleSubmit = async (e)=>{
     e.preventDefault();
-    if (isDemoData) {
-      toast('Demo cars cannot be booked. Add cars in the owner panel to enable booking.')
-      return null
-    }
     try {
       const {data} = await axios.post('/api/bookings/create', {
         car: id,
@@ -46,12 +42,6 @@ const CarDetails = () => {
   useEffect(()=>{
     setCar(cars.find(car => car._id === id))
   },[cars, id])
-
-  useEffect(() => {
-    if (isDemoData) {
-      fetchCars()
-    }
-  }, [isDemoData, fetchCars])
 
   return car ? (
     <div className='px-6 md:px-16 lg:px-24 xl:px-32 mt-16'>
@@ -179,16 +169,12 @@ const CarDetails = () => {
             </div>
 
             <button
-              disabled={isDemoData}
-              className={`w-full transition-all py-3 font-medium text-white rounded-xl ${isDemoData ? 'bg-gray-300 cursor-not-allowed' : 'bg-primary hover:bg-primary-dull cursor-pointer'}`}
+              className='w-full transition-all py-3 font-medium text-white rounded-xl bg-primary hover:bg-primary-dull cursor-pointer'
             >
-              {isDemoData ? 'Booking disabled in demo' : 'Book Now'}
+              Book Now
             </button>
 
             <p className='text-center text-sm'>No credit card required to reserve</p>
-            {isDemoData && (
-              <p className='text-center text-xs text-gray-400'>Add real cars from the owner panel to enable bookings.</p>
-            )}
 
           </motion.form>
        </div>

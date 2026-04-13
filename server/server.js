@@ -9,6 +9,8 @@ import { bootstrapAdmin } from "./configs/bootstrapAdmin.js";
 import userRouter from "./routes/userRoutes.js";
 import ownerRouter from "./routes/ownerRoutes.js";
 import bookingRouter from "./routes/bookingRoutes.js";
+import chatRouter from "./routes/chatRoutes.js";
+import Car from "./models/Car.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,6 +21,11 @@ const app = express()
 // Connect Database
 await connectDB()
 await bootstrapAdmin()
+
+// Remove orphan/demo cars that are not owned by any owner account.
+await Car.deleteMany({
+	$or: [{ owner: null }, { owner: { $exists: false } }]
+})
 
 // Middleware
 app.use(cors());
@@ -31,6 +38,7 @@ app.use(express.static(path.join(__dirname, "../client/dist")));
 app.use('/api/user', userRouter)
 app.use('/api/owner', ownerRouter)
 app.use('/api/bookings', bookingRouter)
+app.use('/api/chat', chatRouter)
 
 // Serve React App - SPA fallback route (commented out for API-only mode)
 // Uncomment when deploying with built frontend

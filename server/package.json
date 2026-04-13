@@ -7,7 +7,7 @@
   "scripts": {
     "server": "nodemon server.js",
     "start": "node server.js",
-    "seed:cars": "node scripts/seedCars.js"
+    "cleanup:demo-cars": "node scripts/cleanupDemoCars.js"
   },
   "keywords": [],
   "author": "",

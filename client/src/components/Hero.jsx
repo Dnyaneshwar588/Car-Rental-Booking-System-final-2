@@ -143,10 +143,24 @@ const Hero = () => {
                     className="relative"
                 >
                     <div className="absolute inset-0 bg-[#FFB15C]/30 rounded-[32px] blur-2xl" />
-                    <img
+                    <motion.img
                         src={assets.main_car}
                         alt="car"
+                        animate={{ x: [0, 18, 0], y: [0, -4, 0] }}
+                        transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
                         className="relative z-10 w-full max-h-96 object-contain drop-shadow-2xl"
+                    />
+                    <motion.div
+                        aria-hidden
+                        className="absolute bottom-14 left-8 h-1.5 w-24 rounded-full bg-gray-500/30"
+                        animate={{ x: [-10, 200] }}
+                        transition={{ duration: 1.4, repeat: Infinity, ease: "linear" }}
+                    />
+                    <motion.div
+                        aria-hidden
+                        className="absolute bottom-10 left-20 h-1.5 w-20 rounded-full bg-gray-500/20"
+                        animate={{ x: [-20, 190] }}
+                        transition={{ duration: 1.2, repeat: Infinity, ease: "linear", delay: 0.2 }}
                     />
                     <div className="absolute bottom-6 left-6 z-20 bg-white/90 border border-[#F1D7B5] rounded-xl px-4 py-3 shadow-lg">
                         <p className="text-xs text-gray-500">Trusted by</p>

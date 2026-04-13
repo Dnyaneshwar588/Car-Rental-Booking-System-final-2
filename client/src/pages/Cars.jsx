@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Title from '../components/Title'
-import { assets, dummyCarData } from '../assets/assets'
+import { assets } from '../assets/assets'
 import CarCard from '../components/CarCard'
 import { useSearchParams } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
@@ -14,10 +14,11 @@ const Cars = () => {
   const pickupLocation = searchParams.get('pickupLocation')
   const pickupDate = searchParams.get('pickupDate')
   const returnDate = searchParams.get('returnDate')
+  const query = searchParams.get('query') || ''
 
   const {cars, axios} = useAppContext()
 
-  const [input, setInput] = useState('')
+  const [input, setInput] = useState(query)
 
   const isSearchData = pickupLocation && pickupDate && returnDate
   const [filteredCars, setFilteredCars] = useState([])
@@ -34,6 +35,7 @@ const Cars = () => {
       || car.model.toLowerCase().includes(input.toLowerCase())  
       || car.category.toLowerCase().includes(input.toLowerCase())  
       || car.transmission.toLowerCase().includes(input.toLowerCase())
+      || car.location.toLowerCase().includes(input.toLowerCase())
     })
     setFilteredCars(filtered)
   }
@@ -68,6 +70,12 @@ const Cars = () => {
     cars.length > 0 && !isSearchData && applyFilter()
   },[input, cars])
 
+  useEffect(()=>{
+    if (!isSearchData) {
+      setInput(query)
+    }
+  }, [query, isSearchData])
+
   return (
     <div>
 
@@ -87,7 +95,7 @@ const Cars = () => {
         className='flex items-center bg-white px-4 mt-6 max-w-140 w-full h-12 rounded-full shadow'>
           <img src={assets.search_icon} alt="" className='w-4.5 h-4.5 mr-2'/>
 
-          <input onChange={(e)=> setInput(e.target.value)} value={input} type="text" placeholder='Search by make, model, or features' className='w-full h-full outline-none text-gray-500'/>
+          <input onChange={(e)=> setInput(e.target.value)} value={input} type="text" placeholder='Search by make, model, location, or features' className='w-full h-full outline-none text-gray-500'/>
 
           <img src={assets.filter_icon} alt="" className='w-4.5 h-4.5 ml-2'/>
         </motion.div>

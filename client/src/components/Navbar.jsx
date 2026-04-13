@@ -10,7 +10,20 @@ const Navbar = () => {
 
     const location = useLocation()
     const [open, setOpen] = useState(false)
+    const [searchTerm, setSearchTerm] = useState('')
     const navigate = useNavigate()
+
+    const handleSearch = (e) => {
+        e.preventDefault()
+        const trimmedSearch = searchTerm.trim()
+
+        if (!trimmedSearch) {
+            navigate('/cars')
+            return
+        }
+
+        navigate(`/cars?query=${encodeURIComponent(trimmedSearch)}`)
+    }
 
   return (
     <motion.div 
@@ -30,10 +43,18 @@ const Navbar = () => {
                 </Link>
             ))}
 
-            <div className='hidden lg:flex items-center text-sm gap-2 border border-borderColor px-3 rounded-full max-w-56 bg-white'>
-                <input type="text" className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500" placeholder="Search cars"/>
-                <img src={assets.search_icon} alt="search" />
-            </div>
+            <form onSubmit={handleSearch} className='hidden lg:flex items-center text-sm gap-2 border border-borderColor px-3 rounded-full max-w-56 bg-white'>
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500"
+                    placeholder="Search cars or locations"
+                />
+                <button type="submit" aria-label="Search cars or locations" className='cursor-pointer'>
+                    <img src={assets.search_icon} alt="search" />
+                </button>
+            </form>
 
             <div className='flex max-sm:flex-col items-start sm:items-center gap-6'>
                 {isOwner ? (

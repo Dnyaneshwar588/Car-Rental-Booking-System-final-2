@@ -19,6 +19,7 @@ import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import { Toaster } from 'react-hot-toast'
 import { useAppContext } from './context/AppContext'
+import SupportChatbot from './components/SupportChatbot'
 
 const App = () => {
 
@@ -54,6 +55,7 @@ const App = () => {
     </Routes>
 
     {!isOwnerPath && pathname !== '/login' && <Footer />}
+    {user && <SupportChatbot />}
     
     </>
   )

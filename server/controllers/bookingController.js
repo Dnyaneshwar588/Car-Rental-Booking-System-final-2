@@ -29,8 +29,8 @@ export const checkAvailabilityOfCar = async (req, res)=>{
             return res.json({success: false, message: "Invalid date range"})
         }
 
-        // fetch all available cars for the given location
-        const cars = await Car.find({location, isAvaliable: true})
+        // fetch only owner-listed available cars for the given location
+        const cars = await Car.find({ location, isAvaliable: true, owner: { $ne: null } })
 
         // check car availability for the given date range using promise
         const availableCarsPromises = cars.map(async (car)=>{
@@ -71,6 +71,14 @@ export const createBooking = async (req, res)=>{
         }
 
         const carData = await Car.findById(car)
+        if (!carData || !carData.owner) {
+            return res.json({ success: false, message: "This car is no longer available for booking" })
+        }
+
+        const ownerData = await User.findById(carData.owner)
+        if (!ownerData || ownerData.role !== "owner") {
+            return res.json({ success: false, message: "This car has no valid owner" })
+        }
 
         // Calculate price based on pickupDate and returnDate
         const noOfDays = Math.ceil((returned - picked) / (1000 * 60 * 60 * 24))
