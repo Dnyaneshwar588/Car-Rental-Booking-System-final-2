@@ -3,9 +3,14 @@ import User from "../models/User.js";
 
 // Ensures a single owner-admin account exists for controlled owner access.
 export const bootstrapAdmin = async () => {
-  const adminEmail = (process.env.ADMIN_EMAIL || "dnyaneshwarkhune723@gmail.com").trim().toLowerCase();
-  const adminPassword = process.env.ADMIN_PASSWORD || "@Manikk9371";
+  const adminEmail = (process.env.ADMIN_EMAIL || "").trim().toLowerCase();
+  const adminPassword = process.env.ADMIN_PASSWORD || "";
   const adminName = process.env.ADMIN_NAME || "Admin";
+
+  if (!adminEmail || !adminPassword) {
+    console.warn("Admin bootstrap skipped: set ADMIN_EMAIL and ADMIN_PASSWORD to enable owner admin sync.");
+    return;
+  }
 
   const hashedPassword = await bcrypt.hash(adminPassword, 10);
   const existing = await User.findOne({ email: adminEmail });

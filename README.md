@@ -133,11 +133,17 @@ npm install
 Create a `.env` file in the **server** folder and add:
 
 ```
-MONGO_URI=your_mongo_atlas_url
+MONGODB_URI=your_mongo_atlas_url
 JWT_SECRET=your_jwt_secret
 IMAGEKIT_PUBLIC_KEY=
 IMAGEKIT_PRIVATE_KEY=
 IMAGEKIT_URL_ENDPOINT=
+SMTP_EMAIL=your_gmail_address
+SMTP_PASSWORD=your_gmail_app_password
+CLIENT_URL=http://localhost:5173
+ADMIN_EMAIL=owner_admin_email
+ADMIN_PASSWORD=strong_admin_password
+ADMIN_NAME=Admin
 ```
 
 ---
@@ -191,7 +197,7 @@ This generates a production-ready build inside `/dist`.
 
 1. Create new web service
 2. Use `server` folder
-3. Add environment variables
+3. Add environment variables (`MONGODB_URI`, `JWT_SECRET`, `CLIENT_URL`, `SMTP_EMAIL`, `SMTP_PASSWORD`, ImageKit keys, admin vars)
 4. Deploy
 
 ### **ImageKit Setup**

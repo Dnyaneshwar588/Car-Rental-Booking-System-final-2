@@ -7,7 +7,10 @@
   "scripts": {
     "server": "nodemon server.js",
     "start": "node server.js",
-    "cleanup:demo-cars": "node scripts/cleanupDemoCars.js"
+    "cleanup:demo-cars": "node scripts/cleanupDemoCars.js",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "",
@@ -24,6 +27,9 @@
     "nodemailer": "^8.0.5"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.2.0",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.8.3"
   }
 }

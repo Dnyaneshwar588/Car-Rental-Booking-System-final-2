@@ -3,7 +3,8 @@ import axios from 'axios'
 import {toast} from 'react-hot-toast'
 import { useNavigate } from "react-router-dom";
 
-axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+const defaultApiUrl = `${window.location.protocol}//${window.location.hostname}:5000`
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || defaultApiUrl
 
 export const AppContext = createContext();
 
